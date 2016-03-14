@@ -322,4 +322,17 @@ public class ItemAPI extends BaseAPI {
 		return getItems(appId, null, null, null, null,
 				new FilterByValue<String>(new ExternalIdFilterBy(), externalId));
 	}
+        
+	/**
+	 * Returns the number of items on app
+	 * 
+	 * @param appId
+	 *            The id of the app
+	 * @return The number of items on app
+	 */
+	public int getItemCount(int appId) {
+		WebResource resource = getResourceFactory().getApiResource(
+				"/item/app/" + appId + "/count");		
+		return resource.get(ItemCount.class).getCount();
+	}
 }

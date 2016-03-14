@@ -142,15 +142,17 @@ public class ContactAPI extends BaseAPI {
 	 *            How the contacts should be ordered
          * @param contactType
          *            The type of contacts to be returned
+         * @param excludeSelf
+         *            True to exclude self, False to include self. Default value: true
 	 * @return The list of contacts
 	 */
 	public <T, F, R> List<T> getContacts(ProfileField<F, R> key, F value,
 			Integer limit, Integer offset, ProfileType<T> type,
-			ContactOrder order, ContactType contactType) {
+			ContactOrder order, ContactType contactType, Boolean excludeSelf) {
 		WebResource resource = getResourceFactory().getApiResource("/contact/");
 
 		return getContactsCommon(resource, key, value, limit, offset, type,
-				order, contactType);
+				order, contactType, excludeSelf);
 	}
 
 	/**
@@ -173,16 +175,19 @@ public class ContactAPI extends BaseAPI {
 	 *            How the contacts should be ordered
          * @param contactType
          *            The type of contacts to be returned
+         * @param excludeSelf
+         *            True to exclude self, False to include self. Default value: true
 	 * @return The list of contacts
 	 */
 	public <T, F, R> List<T> getOrganizationContacts(int organizationId,
 			ProfileField<F, R> key, F value, Integer limit, Integer offset,
-			ProfileType<T> type, ContactOrder order, ContactType contactType) {
+			ProfileType<T> type, ContactOrder order, ContactType contactType,
+                        Boolean excludeSelf) {
 		WebResource resource = getResourceFactory().getApiResource(
 				"/contact/org/" + organizationId);
 
 		return getContactsCommon(resource, key, value, limit, offset, type,
-				order, contactType);
+				order, contactType, excludeSelf);
 	}
 
 	/**
@@ -204,16 +209,19 @@ public class ContactAPI extends BaseAPI {
 	 *            How the contacts should be ordered
          * @param contactType
          *            The type of contacts to be returned
+         * @param excludeSelf
+         *            True to exclude self, False to include self. Default value: true
 	 * @return The list of contacts
 	 */
 	public <T, F, R> List<T> getSpaceContacts(int spaceId,
 			ProfileField<F, R> key, F value, Integer limit, Integer offset,
-			ProfileType<T> type, ContactOrder order, ContactType contactType) {
+			ProfileType<T> type, ContactOrder order, ContactType contactType,
+                        Boolean excludeSelf) {
 		WebResource resource = getResourceFactory().getApiResource(
 				"/contact/space/" + spaceId);
 
 		return getContactsCommon(resource, key, value, limit, offset, type,
-				order, contactType);
+				order, contactType, excludeSelf);
 	}
         
         /**
@@ -232,7 +240,8 @@ public class ContactAPI extends BaseAPI {
 
 	private <T, F, R> List<T> getContactsCommon(WebResource resource,
 			ProfileField<F, R> key, F value, Integer limit, Integer offset,
-			final ProfileType<T> type, ContactOrder order, ContactType contactType) {
+			final ProfileType<T> type, ContactOrder order, ContactType contactType,
+                        Boolean excludeSelf) {
 		if (key != null && value != null) {
 			resource = resource.queryParam("key", key.getName().toLowerCase())
 					.queryParam("value", key.format(value).toString());
@@ -249,6 +258,9 @@ public class ContactAPI extends BaseAPI {
 		}
 		if (contactType != null) {
 			resource = resource.queryParam("contact_type", contactType.name().toLowerCase());
+		}
+		if (excludeSelf != null) {
+			resource = resource.queryParam("exclude_self", excludeSelf ? "1" : "0");
 		}
                 
 		return resource.get(getGenericType(type));
