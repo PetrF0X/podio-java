@@ -2,21 +2,21 @@ package com.podio.filter;
 
 public final class NumberInterval {
 
-	private final float from;
+	private final Float from;
 
-	private final float to;
+	private final Float to;
 
-	public NumberInterval(float from, float to) {
+	public NumberInterval(Float from, Float to) {
 		super();
 		this.from = from;
 		this.to = to;
 	}
 
-	public float getFrom() {
+	public Float getFrom() {
 		return from;
 	}
 
-	public float getTo() {
+	public Float getTo() {
 		return to;
 	}
 }

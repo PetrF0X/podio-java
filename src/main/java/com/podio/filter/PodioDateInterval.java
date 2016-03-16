@@ -27,7 +27,8 @@ public class PodioDateInterval {
 	}
 	
 	public static final PodioDateInterval absolute(LocalDate fromDate, LocalDate toDate) {
-		return new PodioDateInterval(new AbsolutePodioDate(fromDate), new AbsolutePodioDate(toDate));
+		return new PodioDateInterval(fromDate == null ? null : new AbsolutePodioDate(fromDate),
+                        toDate == null ? null : new AbsolutePodioDate(toDate));
 	}
 
 }
