@@ -7,7 +7,7 @@ public class NumberFieldFilterBy extends FieldFilterBy<NumberInterval> {
 	}
 
 	@Override
-	public String format(NumberInterval value) {
-		return value.getFrom() + "-" + value.getTo();
+	public Object format(NumberInterval value) {
+		return value;
 	}
 }

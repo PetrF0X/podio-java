@@ -1,9 +1,12 @@
 package com.podio.filter;
 
-public final class NumberInterval {
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+public final class NumberInterval {
+        @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
 	private final Float from;
 
+        @JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
 	private final Float to;
 
 	public NumberInterval(Float from, Float to) {

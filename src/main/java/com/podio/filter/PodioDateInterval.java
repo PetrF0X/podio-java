@@ -14,7 +14,15 @@ public class PodioDateInterval {
 		this.toDate = toDate;
 	}
 	
-	public String serialize() {
+	public Object serialize() {
+            
+            if (fromDate instanceof AbsolutePodioDate || toDate instanceof AbsolutePodioDate) {
+                PodioDateIntervalFilter values = new PodioDateIntervalFilter(
+                        fromDate == null ? null : ((AbsolutePodioDate) fromDate).getDate(),
+                        toDate == null ? null : ((AbsolutePodioDate) toDate).getDate());
+                return values;
+            } 
+            
 		String result = "";
 		if (fromDate != null) {
 			result += fromDate.serialize();
@@ -30,5 +38,26 @@ public class PodioDateInterval {
 		return new PodioDateInterval(fromDate == null ? null : new AbsolutePodioDate(fromDate),
                         toDate == null ? null : new AbsolutePodioDate(toDate));
 	}
+        
+        public class PodioDateIntervalFilter {
+            private final LocalDate from;
+            private final LocalDate to;
+
+        public PodioDateIntervalFilter(LocalDate from, LocalDate to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        public LocalDate getFrom() {
+            return from;
+        }
+
+        public LocalDate getTo() {
+            return to;
+        }
+            
+            
+            
+        }
 
 }

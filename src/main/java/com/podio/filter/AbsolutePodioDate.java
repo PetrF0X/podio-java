@@ -16,4 +16,8 @@ public class AbsolutePodioDate implements PodioDate {
 		return this.date.toString("yyyy-MM-dd");
 	}
 
+    public LocalDate getDate() {
+        return date;
+    }
+
 }

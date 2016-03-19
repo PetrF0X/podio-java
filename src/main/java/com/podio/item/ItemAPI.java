@@ -13,6 +13,7 @@ import com.podio.filter.FilterByValue;
 import com.podio.filter.SortBy;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
+import java.util.HashMap;
 
 /**
  * Items are entries in an app. If you think of app as a table, items will be
@@ -288,25 +289,29 @@ public class ItemAPI extends BaseAPI {
 	public ItemsResponse getItems(int appId, Integer limit, Integer offset,
 			SortBy sortBy, Boolean sortDesc, FilterByValue<?>... filters) {
 		WebResource resource = getResourceFactory().getApiResource(
-				"/item/app/" + appId + "/v2/");
+				"/item/app/" + appId + "/filter/");
+                Map<String, Object> params = new HashMap<String, Object>();
 		if (limit != null) {
-			resource = resource.queryParam("limit", limit.toString());
+                        params.put("limit", limit);
 		}
 		if (offset != null) {
-			resource = resource.queryParam("offset", offset.toString());
+                        params.put("offset", offset);
 		}
 		if (sortBy != null) {
-			resource = resource.queryParam("sort_by", sortBy.getKey());
+                        params.put("sort_by", sortBy);
 		}
 		if (sortDesc != null) {
-			resource = resource.queryParam("sort_desc", sortDesc ? "1" : "0");
+                        params.put("sort_desc", sortDesc);
 		}
+                Map<String, Object> filterMap = new HashMap<String, Object>();
 		for (FilterByValue<?> filter : filters) {
-			resource = resource.queryParam(filter.getBy().getKey(),
-					filter.getFormattedValue());
+                        filterMap.put(filter.getBy().getKey(), filter.getFormattedValue());
 		}
-
-		return resource.get(ItemsResponse.class);
+                if (filterMap.size() > 0) {
+                        params.put("filters", filterMap);
+                }
+		return resource.entity(params, MediaType.APPLICATION_JSON_TYPE)
+                                .post(ItemsResponse.class);
 	}
 
 	/**

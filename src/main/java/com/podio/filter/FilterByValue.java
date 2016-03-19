@@ -20,7 +20,7 @@ public class FilterByValue<T> {
 		return value;
 	}
 
-	public String getFormattedValue() {
+	public Object getFormattedValue() {
 		return by.format(value);
 	}
 }
